@@ -1,12 +1,13 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const User = require('../models/user');
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import User from '../models/user.js';
+import redisClient from '../config/redis.js';
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
-    console.log("login",req.body)
-    const { email, password } = req.body
-    const user = await User.findOne({ email:email });
+    console.log("login", req.body);
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ email: 'User not found' });
     }
@@ -20,12 +21,12 @@ exports.login = async (req, res) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ success: true, token: `Bearer ${token}` });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(500).json({ error: err });
   }
 };
 
-exports.logout = async(req, res) => {
+export const logout = async (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
   try {
     // Blacklist the token
@@ -37,7 +38,7 @@ exports.logout = async(req, res) => {
   }
 };
 
-exports.refreshToken = async (req, res) => {
+export const refreshToken = async (req, res) => {
   const { token } = req.body;
 
   try {

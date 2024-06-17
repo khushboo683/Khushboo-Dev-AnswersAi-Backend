@@ -1,5 +1,4 @@
-const redisClient = require('../config/redis');
-const jwt = require('jsonwebtoken');
+import redisClient from '../config/redis.js';
 
 const checkBlacklist = async (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
@@ -16,4 +15,4 @@ const checkBlacklist = async (req, res, next) => {
   }
 };
 
-module.exports = checkBlacklist;
+export default checkBlacklist;

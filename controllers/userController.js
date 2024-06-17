@@ -1,8 +1,8 @@
-const User = require('../models/user');
-const bcrypt = require('bcryptjs')
+import User from '../models/user.js';
+import bcrypt from 'bcryptjs';
 
-exports.createUser = async (req, res) => {
-    console.log(req.body)
+export const createUser = async (req, res) => {
+    console.log(req.body);
     const { name, email, password } = req.body;
     try {
         let user = await User.findOne({ email });
@@ -15,32 +15,30 @@ exports.createUser = async (req, res) => {
         await user.save();
         res.status(201).json(user);
     } catch (err) {
-        console.log(err)
+        console.log(err);
         res.status(500).json(err);
     }
 };
 
-exports.getUser = async (req, res) => {
+export const getUser = async (req, res) => {
     try {
-        const { userId } = req.params
+        const { userId } = req.params;
         const user = await User.findById(userId).populate('questions');
         if (!user) {
-            res.status(400).json('User does not exist! Register first.')
+            return res.status(400).json('User does not exist! Register first.');
         }
         res.status(201).json(user);
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
-
     }
 };
 
-exports.getUserQuestions = async (req, res) => {
+export const getUserQuestions = async (req, res) => {
     try {
-        const { userId } = req.params
+        const { userId } = req.params;
         const user = await User.findById(userId).populate('questions');
         res.status(201).json(user.questions);
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
-
     }
 };

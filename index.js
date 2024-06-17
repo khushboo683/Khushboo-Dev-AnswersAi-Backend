@@ -1,11 +1,13 @@
-const express = require('express');
-const passport = require('passport');
-require('dotenv').config();
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const userRoutes = require('./routes/userRoutes');
-const authRoutes = require('./routes/authRoutes');
-const questionRoutes = require('./routes/questionRoutes');
+import express from 'express';
+import passport from 'passport';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import questionRoutes from './routes/questionRoutes.js';
+import passportConfig from './config/passport.js';
+dotenv.config();
 const app = express();
 
 // Middleware
@@ -16,8 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
 // Passport config
-require('./config/passport')(passport);
-
+passportConfig(passport);
 // Database connection
 mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true,
