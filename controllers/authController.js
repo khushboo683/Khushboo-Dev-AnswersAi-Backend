@@ -42,19 +42,14 @@ export const refreshToken = async (req, res) => {
   const { token } = req.body;
 
   try {
-    const isBlacklisted = await redisClient.get(token);
-    if (isBlacklisted) {
-      return res.sendStatus(403).json({ message: 'Token is blacklisted' });
-    }
-
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      console.log("refresh",err)
       if (err) return res.sendStatus(403);
 
       const newToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
       res.json({ token: newToken });
     });
   } catch (error) {
-    console.error(error);
     res.sendStatus(500).json({ message: 'Internal server error' });
   }
 };

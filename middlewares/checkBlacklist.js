@@ -5,12 +5,11 @@ const checkBlacklist = async (req, res, next) => {
 
   try {
     const isBlacklisted = await redisClient.get(token);
-    if (isBlacklisted) {
+    if (isBlacklisted) { //if token is blacklisted
       return res.status(401).json({ message: 'Token is blacklisted' });
     }
     next();
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
