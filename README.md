@@ -46,7 +46,7 @@ $ npm run start:dev
 
 ## Technologies Used
 
-LLM API ('https://platform.openai.com/docs/overview')
+LLM API https://platform.openai.com/docs/overview
 
 Backend Framework: Express
 
