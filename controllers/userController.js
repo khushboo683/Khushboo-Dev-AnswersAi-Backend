@@ -23,7 +23,7 @@ export const createUser = async (req, res) => {
 export const getUser = async (req, res) => {
     try {
         const { userId } = req.params;
-        const user = await User.findById(userId).populate('questions');
+        const user = await User.findById(userId);
         if (!user) {
             return res.status(400).json('User does not exist! Register first.');
         }
